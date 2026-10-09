@@ -2,6 +2,7 @@ pydantic-ai-slim[groq]
 pydantic-ai-harness
 pydantic-settings
 langchain-community
+langchain-groq
 pyresilience
 slack_sdk 
 ddgs
@@ -9,3 +10,5 @@ logfire[system-metrics]
 opentelemetry-exporter-otlp
 langsmith 
 fastapi[standard]
+deepagents
+tavilyc

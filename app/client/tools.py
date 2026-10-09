@@ -3,6 +3,9 @@ from ddgs import DDGS
 
 
 def search_images(query: str) -> list[dict]:
+    """
+    Perform an image search using DuckDuckGo.
+    """
     try:
         results = DDGS().images(
             query=query,
@@ -27,20 +30,4 @@ def search_images(query: str) -> list[dict]:
         ]
 
 
-def duckduckgo_search(query: str) -> list[dict]:
-    try:
-        return list(
-            DDGS().text(
-                query,
-                max_results=5
-            )
-        )
-    except Exception as error:
-        return [{
-            "error": "Web search temporarily unavailable",
-            "message": str(error)
-        }]
-
-
-search_tool = duckduckgo_search
 image_search_tool = search_images

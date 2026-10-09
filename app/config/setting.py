@@ -8,7 +8,7 @@ class __CoreSettings(BaseSettings):
     LANGSMITH_ENDPOINT: str
     LANGSMITH_API_KEY: str
     LANGSMITH_PROJECT: str
-
+    TRAVILY_API: str
     model_config = SettingsConfigDict(
         env_file=".env"
     )
