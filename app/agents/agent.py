@@ -62,7 +62,9 @@ class AiAgentClient(AiAgentClientAbstraion):
           This method runs the AI agent with the provided user input and yields the generated tokens as they are produced.
           """
         try:
-            logfire.info("agent invoked sucesfully")
+            logfire.info(
+                "agent client invoked sucessfully it is working on the client query"
+            )
             respones = await self.agent.ainvoke(
                 input={
                     "messages": [

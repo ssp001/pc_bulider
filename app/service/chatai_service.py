@@ -25,4 +25,4 @@ async def rune_chatai_servie(input: str) -> AsyncGenerator[Dict | AiErrorHnadele
     except AiErrorHnadeler as error:
         logfire.error(str(error))
         raise RuntimeError(
-            "agent can't be excuted at the moment please try agqain after some time") from error
+            "agent can't be excuted at the moment please try again after some time") from error

@@ -1,11 +1,9 @@
-from typing import AsyncGenerator, Any
 from deepagents import create_deep_agent
 from app.utils import AiErrorHnadeler
 from langchain_groq.chat_models import ChatGroq
 from .chataitools import search_tool
 import logfire
 from app.config import setting
-from langgraph.checkpoint.memory import MemorySaver
 import abc
 
 
@@ -35,6 +33,7 @@ class AiChatClient(AiChatAbstraion):
             you are just do chat users understand the buget and regarding reqierments pc and
             give it the budget_pc_requirement output and retrut your reposnes to the user as as anagent output.
             give a resonable ansewr to user also .
+            waite for full calrity when you know what to search or ask the user do they staisfied what tehy wanted then use tools only.
             }""",
         )
 
@@ -45,7 +44,9 @@ class AiChatClient(AiChatAbstraion):
         """
        # Run the agent
         try:
-            logfire.info("agent invoked sucessfully")
+            logfire.info(
+                "chatai client invoked sucessfully it is working on the client query"
+            )
             async for chunk in self.agent.astream(
                 input={
                     "messages": [
@@ -62,4 +63,4 @@ class AiChatClient(AiChatAbstraion):
         except Exception as error:
             logfire.error(
                 f"Error occurred while running the agent: {str(error)}")
-            yield AiErrorHnadeler(message=error)
+            yield AiErrorHnadeler(message="error form the client side encounterd a problem here please resolve it")
