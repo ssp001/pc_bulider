@@ -1,3 +1,5 @@
+from types import CoroutineType
+from typing import Any
 from deepagents import create_deep_agent
 import os
 from langchain_groq.chat_models import ChatGroq
@@ -52,6 +54,7 @@ class AiAgentClient(AiAgentClientAbstraion):
             show an image it self not an link to see the image in a perticular website.
             you have the tools to use and find the relevent data use it as it need 
             """,
+
         )
 
     async def run_agent(self, user_input: str):
@@ -60,19 +63,18 @@ class AiAgentClient(AiAgentClientAbstraion):
           """
         try:
             logfire.info("agent invoked sucesfully")
-            async for chunk in self.agent.astream(
+            respones = await self.agent.ainvoke(
                 input={
                     "messages": [
-                    {
-                        "role": "user",
-                        "content": user_input
-                    }
+                        {
+                            "role": "user",
+                            "content": user_input
+                        }
                     ]
                 },
-            ):
-                if isinstance(chunk, dict) and "model" in chunk:
-                    print(repr(chunk))
-                    yield chunk
+            )
+            if isinstance(respones, dict) and "model" in respones:
+                return respones
         except Exception as error:
             logfire.error("Agent execution failed: {error}", error=str(error))
-            yield AiErrorHnadeler(message="can't run agent client error occured")
+            return AiErrorHnadeler(message="can't run agent client error occured")

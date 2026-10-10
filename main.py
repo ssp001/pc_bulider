@@ -1,3 +1,5 @@
+from typing import Any
+from types import CoroutineType
 from app.service import rune_chatai_servie, rune_search_engnine_service
 import logfire
 from fastapi import FastAPI
@@ -36,11 +38,15 @@ async def agent_run(user_input: str):
     The response is streamed back to the client as it is generated.
     """
     try:
-        async def agent_strem_respones():
-            async for chunk in rune_search_engnine_service(input=user_input):
-                messsage = chunk["model"]["messages"][-1].content
-                yield messsage
-        return StreamingResponse(agent_strem_respones(), media_type="text/plain")
+        respones = await rune_search_engnine_service(input=user_input)
+        if isinstance(respones, dict) and "model" in respones:
+            messsage = respones["model"]["messages"][-1].content
+            return messsage
+        else:
+            return {
+                "error": "chunk is not a dict type varriable",
+                "statusCode": 413
+            }
     except Exception as error:
         logfire.error(f"Error occurred while running the agent: {str(error)}")
         return {"error": "An error occurred while processing your request."}

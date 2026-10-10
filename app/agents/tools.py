@@ -1,7 +1,8 @@
-from tavily import TavilyClient
+import logfire
+from tavily import TavilyClient, AsyncTavilyClient
 from app.config import setting
 
-tavily_client = TavilyClient(api_key=setting.TRAVILY_API)
+tavily_client = AsyncTavilyClient(api_key=setting.TRAVILY_API)
 
 """
 def internet_search(
@@ -47,20 +48,29 @@ subagent_for_description = {
 """
 
 
-def subagent_for_image(
+async def subagent_for_image(
     query: str,
     max_results: int = 5,
     include_raw_content: bool = False,
 ):
     """Run a image search"""
-    return tavily_client.search(
-        query,
-        max_results=max_results,
-        include_raw_content=include_raw_content,
-    )
+    try:
+        logfire.info("image search lanched sucessfully")
+        travily_respoens = await tavily_client.search(
+            query,
+            max_results=max_results,
+            include_raw_content=include_raw_content,
+        )
+        print("image respones", travily_respoens)
+        yield travily_respoens
+    except Exception as error:
+        logfire.error(error)
+        raise RuntimeError(
+            "error ocuured can't run image search imsternet tool at the moment"
+        ) from error
 
 
-def subagent_for_shopin_link_and_price(
+async def subagent_for_shopin_link_and_price(
     query: str,
     max_results: int = 5,
     include_raw_content: bool = False,
@@ -68,14 +78,26 @@ def subagent_for_shopin_link_and_price(
     """
     Run a shoping link and price search
     """
-    return tavily_client.search(
-        query,
-        max_results=max_results,
-        include_raw_content=include_raw_content,
-    )
+    try:
+        logfire.info("shoping link and price search lanched sucessfully")
+        travily_respoens = await tavily_client.search(
+            query,
+            max_results=max_results,
+            include_raw_content=include_raw_content,
+        )
+        print(
+            "shoping link and price respones",
+            travily_respoens
+        )
+        yield travily_respoens
+    except Exception as error:
+        logfire.error(error)
+        raise RuntimeError(
+            "error ocuured can't run shoping link and price search imsternet tool at the moment"
+        ) from error
 
 
-def subagent_for_description(
+async def subagent_for_description(
     query: str,
     max_results: int = 5,
     include_raw_content: bool = False,
@@ -83,8 +105,19 @@ def subagent_for_description(
     """
     Run a description search
     """
-    return tavily_client.search(
-        query,
-        max_results=max_results,
-        include_raw_content=include_raw_content,
-    )
+    try:
+        logfire.info("descrition search lanched sucessfully")
+        travily_respoens = await tavily_client.search(
+            query,
+            max_results=max_results,
+            include_raw_content=include_raw_content,
+        )
+        print(
+            f"descritopn respones{travily_respoens}"
+        )
+        yield travily_respoens
+    except Exception as error:
+        logfire.error(error)
+        raise RuntimeError(
+            "error ocuured can't run descritopn search imsternet tool at the moment"
+        ) from error
