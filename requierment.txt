@@ -11,4 +11,5 @@ opentelemetry-exporter-otlp
 langsmith 
 fastapi[standard]
 deepagents
-tavilyc
+tavily
+streamlit

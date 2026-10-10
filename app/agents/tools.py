@@ -1,16 +1,15 @@
-from typing import Literal
 from tavily import TavilyClient
 from app.config import setting
 
 tavily_client = TavilyClient(api_key=setting.TRAVILY_API)
 
-
+"""
 def internet_search(
     query: str,
     max_results: int = 5,
     include_raw_content: bool = False,
 ):
-    """Run a web search"""
+Run a web search
     return tavily_client.search(
         query,
         max_results=max_results,
@@ -45,9 +44,47 @@ subagent_for_description = {
     "model": "groq:openai/gpt-oss-20b",
 }
 
+"""
 
-subagents = [
-    subagent_for_description,
-    subagent_for_shopin_link_and_price,
-    subagent_for_image
-]
+
+def subagent_for_image(
+    query: str,
+    max_results: int = 5,
+    include_raw_content: bool = False,
+):
+    """Run a image search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+    )
+
+
+def subagent_for_shopin_link_and_price(
+    query: str,
+    max_results: int = 5,
+    include_raw_content: bool = False,
+):
+    """
+    Run a shoping link and price search
+    """
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+    )
+
+
+def subagent_for_description(
+    query: str,
+    max_results: int = 5,
+    include_raw_content: bool = False,
+):
+    """
+    Run a description search
+    """
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+    )

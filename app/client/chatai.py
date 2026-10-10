@@ -5,7 +5,7 @@ from langchain_groq.chat_models import ChatGroq
 from .chataitools import search_tool
 import logfire
 from app.config import setting
-from langgraph.cache.memory import InMemoryCache
+from langgraph.checkpoint.memory import MemorySaver
 import abc
 
 

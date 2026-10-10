@@ -1,12 +1,12 @@
 from deepagents import create_deep_agent
 import os
 from langchain_groq.chat_models import ChatGroq
-from .subaent import subagents
+from .tools import subagent_for_description, subagent_for_image, subagent_for_shopin_link_and_price
 import abc
 import logfire
 from app.config import setting
 from app.utils import AiErrorHnadeler
-from .subaent import (
+from .tools import (
     subagent_for_shopin_link_and_price,
     subagent_for_description,
     subagent_for_image,
@@ -27,9 +27,14 @@ class AiAgentClient(AiAgentClientAbstraion):
                 api_key=os.getenv("GROQ_API_KEY"),
                 temperature=0.0
             ),
+            tools=[
+                subagent_for_shopin_link_and_price,
+                subagent_for_description,
+                subagent_for_image
+            ],
             system_prompt="""
             you are a agent that will find opc parts images description and shoping link with affordable buget and give a strucher respones
-            your task is only to find out the realm time price of the pc parts of which you will get as inptu
+            your task is only to find out the realm time price of the pc parts of which you will get as input
             and the strict formate is-
             {
             pc-part-name,
@@ -44,9 +49,9 @@ class AiAgentClient(AiAgentClientAbstraion):
             don't ask anything give the data what you have at that moment.
             don't act like an ai agent.
             a tool call just give the strict formate in json and done,no more anything.
-            show an image it self not an link to see the image in a perticular website 
+            show an image it self not an link to see the image in a perticular website.
+            you have the tools to use and find the relevent data use it as it need 
             """,
-            subagents=subagents
         )
 
     async def run_agent(self, user_input: str):
